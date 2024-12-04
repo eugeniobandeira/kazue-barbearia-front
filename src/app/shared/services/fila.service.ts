@@ -21,6 +21,10 @@ export class FilaService {
     return this.http.get(`${this.apiUrl}/${id}`);
   }
 
+  listarFilaAtiva(data: any): Observable<any> {
+    return this.http.get(`${this.apiUrl}/fila-ativa?data=${data}`);
+  }
+
   adicionar(cliente: any): Observable<any> {
     return this.http.post(this.apiUrl, cliente);
   }

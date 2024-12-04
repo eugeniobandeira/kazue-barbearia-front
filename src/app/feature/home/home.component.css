@@ -1,3 +1,9 @@
 :host {
   display: block;
 }
+
+.banner {
+  background-image: url('banner.jpeg') !important;
+  background-size: cover;
+  background-position: center;
+}

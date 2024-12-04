@@ -15,7 +15,7 @@ import { Observable } from 'rxjs';
     <mat-dialog-content>Tem certeza que quer fazer isso?</mat-dialog-content>
     <mat-dialog-actions>
       <button mat-raised-button (click)="onNo()">Não</button>
-      <button mat-raised-button color="warn" (click)="onYes()" cdkFocusInitial>Sim</button>
+      <button mat-raised-button color="accent" (click)="onYes()" cdkFocusInitial>Sim</button>
     </mat-dialog-actions>
   `,
 })

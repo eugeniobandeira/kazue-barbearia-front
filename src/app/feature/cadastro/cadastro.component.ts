@@ -9,8 +9,7 @@ import { ICorte } from '../../shared/interfaces/corte.interfaces';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormField } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { ICortePayload } from '../../shared/interfaces/payload-corte.interface';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { VoltarParaListagemComponent } from '../../shared/components/voltar-para-listagem/voltar-para-listagem.component';
 import { Router } from '@angular/router';
 import { FilaService } from '../../shared/services/fila.service';
@@ -43,6 +42,7 @@ export class CadastroComponent {
   fb = inject(FormBuilder);
   filaService = inject(FilaService);
   snackBar = inject(MatSnackBarModule);
+  matSnackBar = inject(MatSnackBar);
 
   ngOnInit(): void {
     const dataBrasil = new Date().toLocaleString('sv-SE', { timeZone: 'America/Sao_Paulo' }).replace(' ', 'T');
@@ -64,23 +64,11 @@ export class CadastroComponent {
   onSubmit() {
     const payload = this.form.value;
 
-    this.filaService.adicionar(payload).subscribe(
-      () => {
-        console.log('corte: ', payload);
+    this.filaService.adicionar(payload)
+    .subscribe(() => {
+        this.matSnackBar.open('Registro salvo com sucesso!', 'Fechar');
         this.router.navigateByUrl('/');
       },
     );
-    // if (this.form.valid) {
-    //   const payload = this.form.value;
-
-    //   this.filaService.adicionar(payload).subscribe(
-    //     () => {
-    //       console.log('corte: ', payload);
-    //       this.router.navigateByUrl('/');
-    //     },
-    //   );
-    // } else {
-    //   console.error('Formulario inválido');
-    // }
   }
 }
