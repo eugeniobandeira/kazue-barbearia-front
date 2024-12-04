@@ -1,0 +1,44 @@
+<div>
+  <app-voltar-para-listagem class="p-4"></app-voltar-para-listagem>
+  <div class="grid place-content-center">
+    
+    <form
+      [formGroup]="form"
+      (ngSubmit)="onSubmit()"
+    >
+        <div class="flex flex-col justify-center align-middle">
+          <mat-form-field>
+            <input
+              type="text"
+              matInput
+              formControlName="nome"
+              placeholder="seu nome"
+            />
+          </mat-form-field>
+    
+          <mat-form-field>
+            <mat-label>Tipo de Serviço</mat-label>
+            <mat-select [(value)]="servicoOpt" formControlName="servico">
+              <mat-option value="corte">Corte</mat-option>
+              <mat-option value="corte e barba">Corte e Barba</mat-option>
+              <mat-option value="barba">Barba</mat-option>
+              <mat-option value="outros">Outros</mat-option>
+            </mat-select>
+          </mat-form-field>
+    
+          <mat-form-field>
+            <mat-label>Tem preferência?</mat-label>
+            <mat-select [(value)]="barbeiro" formControlName="barbeiroPreferido">
+              <mat-option value="Não">Não</mat-option>
+              <mat-option value="Jasiel">Jasiel</mat-option>
+              <mat-option value="Robson">Robson</mat-option>
+              <mat-option value="Marcos">Marcos</mat-option>
+            </mat-select>
+          </mat-form-field>
+    
+          <button mat-raised-button color="primary">Salvar</button>
+        </div>
+      </form>
+  </div>
+</div>
+  
