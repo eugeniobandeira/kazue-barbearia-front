@@ -1,23 +1,28 @@
-<div>
+<div class="overflow-hidden">
   <!-- banner -->
-  <div class="h-screen p-8 banner">
+  <div class="p-8 banner min-h-svh sm:h-[calc(100vh-320px)]">
     <div class="grid place-content-center place-items-center h-full">
       <div class="w-2/3">
-        <!-- <h1 class="text-center">Kazue Barbearia</h1> -->
-        <p class="text-center text-white">
+        <p class="sm:text-lg md:text-xl text-center text-white">
           A Barbearia Kazue é aquele lugar onde qualidade e descontração andam
           juntas. Aqui, você cuida do visual em um ambiente leve, com bons papos
           e atenção aos detalhes.
         </p>
       </div>
-      <a mat-raised-button routerLink="/cadastro">Entrar na fila de espera</a>
+      <a mat-raised-button routerLink="/cadastro" color="accent">Entrar na fila de espera</a>
     </div>
   </div>
 
   <!-- fila ativa -->
   <div id="fila-ativa" class="mt-4">
-    <div class="grid place-content-center place-items-center h-full">
-      <app-usuario></app-usuario>
+    <div class="p-4">
+      <div class="max-w-full p-4">
+        <div class="">
+          @defer (on immediate) {
+            <app-usuario class="p-4"></app-usuario>            
+          }
+        </div>
+      </div>
     </div>
   </div>
 
@@ -25,7 +30,7 @@
   <div id="sobre" class="mt-4">
     <div class="grid place-content-center place-items-center h-full">
       <div class="w-2/3">
-        <h1 class="text-center">Sobre</h1>
+        <h1 class="text-lg text-center">Sobre</h1>
         <p class="text-center">
           Na Kazue Barbearia, a gente manda bem no corte de cabelo, seja no
           estilo clássico ou moderno. Fazemos a sobrancelha com aquele toque
@@ -59,7 +64,11 @@
           <li>Sobrancelha</li>
         </ul>
       </div>
-      <a class="mb-4" mat-raised-button routerLink="/cadastro" color="accent"
+      <a
+        class="mb-4"
+        mat-raised-button
+        routerLink="/cadastro"
+        color="accent"
         >Entrar na fila de espera</a
       >
     </div>
@@ -80,7 +89,7 @@
           </p>
 
           <a
-            href="#"
+            href="https://api.whatsapp.com/send?phone=5555119739308"
             class="bg-yellow-500 text-black-600 px-6 py-2 rounded-lg font-semibold hover:bg-yellow-400 transition duration-300"
             >WhatsApp</a
           >

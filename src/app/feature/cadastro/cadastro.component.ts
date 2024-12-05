@@ -1,7 +1,9 @@
-import { Component, EventEmitter, inject, Output } from '@angular/core';
+import { Component, EventEmitter, inject, OnInit, Output } from '@angular/core';
 import {
   FormBuilder,
+  FormControl,
   FormGroup,
+  FormsModule,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
@@ -14,6 +16,9 @@ import { VoltarParaListagemComponent } from '../../shared/components/voltar-para
 import { Router } from '@angular/router';
 import { FilaService } from '../../shared/services/fila.service';
 import { MatSelectModule } from '@angular/material/select';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { map, Observable, startWith } from 'rxjs';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-cadastro',
@@ -25,14 +30,29 @@ import { MatSelectModule } from '@angular/material/select';
     MatSnackBarModule,
     VoltarParaListagemComponent,
     MatSelectModule,
+    MatAutocompleteModule,
+    FormsModule,
+    CommonModule
   ],
   templateUrl: './cadastro.component.html',
   styleUrl: './cadastro.component.css',
   standalone: true,
 })
-export class CadastroComponent {
-  servicoOpt: string = '';
-  barbeiro: string = '';
+export class CadastroComponent implements OnInit {
+  myControl = new FormControl('');
+  opcaoServico: string[] = [
+    'Corte', 
+    'Corte Afro (Nudred)', 
+    'Corte e Barba',
+    'Corte e Luzes',
+    'Barba',
+    'Pezinho',
+    'Sobrancelha',
+    'Alisamento',
+  ];
+  filteredOptions!: Observable<string[]>;
+  
+  barbeiro!: string;
 
   form!: FormGroup;
 
@@ -45,6 +65,11 @@ export class CadastroComponent {
   matSnackBar = inject(MatSnackBar);
 
   ngOnInit(): void {
+    this.filteredOptions = this.myControl.valueChanges.pipe(
+      startWith(''),
+      map(value => this._filter(value || '')),
+    );
+    
     const dataBrasil = new Date().toLocaleString('sv-SE', { timeZone: 'America/Sao_Paulo' }).replace(' ', 'T');
 
     this.form = this.fb.group({
@@ -52,23 +77,59 @@ export class CadastroComponent {
       servico: ['', Validators.required],
       status: ['Aguardando'],
       registradoEm: [dataBrasil],
-      barbeiroPreferido: [''],
+      barbeiroPreferido: ['', Validators.required],
+      descricaoServico: ['', this.servicoControlValidator()],
+    });
+
+    this.myControl.valueChanges.subscribe(value => {
+      this.form.patchValue({ servico: value });
+    });
+
+    this.form.get('servico')?.valueChanges.subscribe(value => {
+      if (value === 'Outros') {
+        this.form.get('descricaoServico')?.setValidators(Validators.required);
+      } else {
+        this.form.get('descricaoServico')?.clearValidators();
+      }
+      this.form.get('descricaoServico')?.updateValueAndValidity();
     });
 
     this.form.patchValue({ 
-      servico: this.servicoOpt,
+      servico: this.opcaoServico,
       barbeiroPreferido: this.barbeiro, 
     });
   }
 
-  onSubmit() {
-    const payload = this.form.value;
+  private _filter(value: string): string[] {
+    const filterValue = value.toLowerCase();
 
-    this.filaService.adicionar(payload)
-    .subscribe(() => {
-        this.matSnackBar.open('Registro salvo com sucesso!', 'Fechar');
-        this.router.navigateByUrl('/');
-      },
-    );
+    return this.opcaoServico.filter(option => option.toLowerCase().includes(filterValue));
+  }
+
+  onSubmit() {
+    if (this.form.valid) {
+      const payload = { ...this.form.value };
+
+      if (payload.servico === 'Outros') {
+        payload.servico = payload.descricaoServico;
+      }
+  
+      delete payload.descricaoServico;
+
+      this.filaService.adicionar(payload)
+      .subscribe(() => {
+          this.matSnackBar.open('Registro salvo com sucesso!', 'Fechar');
+          this.router.navigateByUrl('/');
+        },
+      );
+    }
+  }
+
+  private servicoControlValidator() {
+    return () => {
+      return this.form?.get('servico')?.value === 'Outros'
+        ? Validators.required
+        : null;
+    };
   }
 }

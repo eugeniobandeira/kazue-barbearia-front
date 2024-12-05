@@ -11,7 +11,7 @@ import { Observable } from 'rxjs';
     MatDialogModule,
   ],
   template: `
-    <h2 mat-dialog-title>Remover cliente da fila</h2>
+    <h2 mat-dialog-title>Confirmar ação</h2>
     <mat-dialog-content>Tem certeza que quer fazer isso?</mat-dialog-content>
     <mat-dialog-actions>
       <button mat-raised-button (click)="onNo()">Não</button>

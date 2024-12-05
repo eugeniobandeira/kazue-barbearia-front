@@ -5,5 +5,7 @@
 .banner {
   background-image: url('banner.jpeg') !important;
   background-size: cover;
-  background-position: center;
+  background-position: center;  
 }
+
+

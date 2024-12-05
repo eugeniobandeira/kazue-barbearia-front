@@ -12,19 +12,77 @@
               type="text"
               matInput
               formControlName="nome"
-              placeholder="seu nome"
+              placeholder="Seu nome"
             />
           </mat-form-field>
-    
+          
           <mat-form-field>
             <mat-label>Tipo de Serviço</mat-label>
-            <mat-select [(value)]="servicoOpt" formControlName="servico">
-              <mat-option value="corte">Corte</mat-option>
-              <mat-option value="corte e barba">Corte e Barba</mat-option>
-              <mat-option value="barba">Barba</mat-option>
-              <mat-option value="outros">Outros</mat-option>
-            </mat-select>
+            <input type="text"
+                   placeholder="Tipo de serviço"
+                   aria-label="Tipo de serviço"
+                   matInput
+                   [formControl]="myControl"
+                   [matAutocomplete]="auto"
+                   formControlName="servico">
+            <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+              <mat-option *ngFor="let option of (filteredOptions | async)" [value]="option">
+                {{ option }}
+              </mat-option>
+              <mat-option value="Outros">Outros</mat-option>
+            </mat-autocomplete>
           </mat-form-field>
+          
+          <mat-form-field *ngIf="form.get('servico')?.value === 'Outros'">
+            <mat-label>Descreva o Serviço</mat-label>
+            <input matInput
+                   formControlName="descricaoServico"
+                   placeholder="Descreva o tipo de serviço">
+            <mat-error *ngIf="form.get('descricaoServico')?.hasError('required')">
+              A descrição é obrigatória.
+            </mat-error>
+          </mat-form-field>
+          
+          <!-- <mat-form-field>
+            <mat-label>Tipo de Serviço</mat-label>
+            <input type="text"
+                   placeholder="Tipo de servico"
+                   aria-label="Tipo de servico"
+                   matInput
+                   [formControl]="myControl"
+                   [matAutocomplete]="auto"
+                   formControlName="servico"
+            >
+            <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+              @for (option of filteredOptions | async; track option) {
+                <mat-option [value]="option">{{option}}</mat-option>
+              }
+            </mat-autocomplete>
+          </mat-form-field>
+
+          <mat-form-field *ngIf="form.get('servico')?.value === 'Outros'">
+            <mat-label>Descreva o Serviço</mat-label>
+            <input matInput
+                   formControlName="descricaoServico"
+                   placeholder="Descreva o tipo de serviço">
+            <mat-error *ngIf="form.get('descricaoServico')?.hasError('required')">
+              A descrição é obrigatória.
+            </mat-error>
+          </mat-form-field> -->
+          <!-- <mat-form-field>
+            <mat-label>Tipo de Serviço</mat-label>
+            <mat-select [(value)]="servicoOpt" formControlName="servico">
+              <mat-option value="Corte">Corte</mat-option>
+              <mat-option value="Corte Afro (Nudred)">Corte Afro (Nudred)</mat-option>
+              <mat-option value="Corte e barba">Corte e Barba</mat-option>
+              <mat-option value="Corte e luzes">Corte e Luzes</mat-option>
+              <mat-option value="Barba">Barba</mat-option>
+              <mat-option value="Pezinho">Pezinho</mat-option>
+              <mat-option value="Sobrancelha">Sobrancelha</mat-option>
+              <mat-option value="Alisamento">Alisamento</mat-option>
+              <mat-option value="Outros">Outros</mat-option>
+            </mat-select>
+          </mat-form-field> -->
     
           <mat-form-field>
             <mat-label>Tem preferência?</mat-label>
@@ -35,8 +93,23 @@
               <mat-option value="Marcos">Marcos</mat-option>
             </mat-select>
           </mat-form-field>
+
+          <!-- <mat-form-field>
+            <mat-label>Tipo de Serviço</mat-label>
+            <input type="text"
+                   placeholder="Tipo de servico"
+                   aria-label="Tipo de servico"
+                   matInput
+                   [formControl]="myControl"
+                   [matAutocomplete]="auto">
+            <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+              @for (option of filteredOptions | async; track option) {
+                <mat-option [value]="option">{{option}}</mat-option>
+              }
+            </mat-autocomplete>
+          </mat-form-field> -->
     
-          <button mat-raised-button color="primary">Salvar</button>
+          <button mat-raised-button color="primary" [disabled]="form.invalid">Salvar</button>
         </div>
       </form>
   </div>

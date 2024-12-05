@@ -12,6 +12,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { ConfirmacaoDialogService } from '../../shared/services/confirmacao-dialog.service';
 import { filter } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { VoltarParaListagemComponent } from '../../shared/components/voltar-para-listagem/voltar-para-listagem.component';
 
 @Component({
   selector: 'app-admin',
@@ -25,6 +26,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
     MatIconModule,
     MatButtonModule,
     MatTooltipModule,
+    VoltarParaListagemComponent
   ],
   templateUrl: './admin.component.html',
   styleUrl: './admin.component.css',
@@ -60,8 +62,23 @@ export class AdminComponent {
       .openDialog()
       .pipe(filter((resposta) => resposta === true))
       .subscribe(() => {
-        this.filaService.atualizar(corte.id).subscribe(() => {
-          this.matSnackBar.open('Status atualizado com sucesso!', 'Fechar');
+        this.filaService.atualizarParaFinalizado(corte.id).subscribe(() => {
+          this.matSnackBar.open('Status atualizado finalizado!', 'Fechar');
+          this.filaService.listar().subscribe((data) => {
+            this.clientes = data;
+            this.dataSource.data = this.clientes;
+          });
+        });
+      });
+  }
+
+  onEmProgresso(corte: ICorte): void {
+    this.confirmacaoService
+      .openDialog()
+      .pipe(filter((resposta) => resposta === true))
+      .subscribe(() => {
+        this.filaService.atualizarParaEmAndamento(corte.id).subscribe(() => {
+          this.matSnackBar.open('Status atualizado para em andamento', 'Fechar');
           this.filaService.listar().subscribe((data) => {
             this.clientes = data;
             this.dataSource.data = this.clientes;

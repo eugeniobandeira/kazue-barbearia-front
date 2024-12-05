@@ -16,3 +16,53 @@ p {
   margin-bottom: 20px;
   padding: 10px;
 }
+
+.badge-yellow {
+  display: inline-block;
+  padding: 0.25em 0.75em;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #856404;
+  background-color: #fff3cd;
+  border: 1px solid #ffeeba;
+  border-radius: 0.5em;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+
+  &:hover {
+    background-color: #ffeeba;
+    color: #654a00;
+    cursor: pointer;
+  }
+
+  &:active {
+    background-color: #ffdf7e;
+    color: #503c00;
+  }
+}
+
+.badge-green {
+  display: inline-block;
+  padding: 0.25em 0.75em;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #155724;
+  background-color: #d4edda;
+  border: 1px solid #c3e6cb;
+  border-radius: 0.5em;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+}
+
+.badge-green:hover {
+  background-color: #c3e6cb;
+  color: #0b3f20;
+  cursor: pointer;
+}
+
+.badge-green:active {
+  background-color: #b1dfbb;
+  color: #083016;
+}

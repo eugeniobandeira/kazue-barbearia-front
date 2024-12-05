@@ -10,7 +10,7 @@ export class FilaService {
   private readonly apiUrl = 'http://localhost:5107/api/fila';
 
   constructor(
-    private http: HttpClient
+    private readonly http: HttpClient
   ) {}
 
   listar(): Observable<any> {
@@ -22,15 +22,19 @@ export class FilaService {
   }
 
   listarFilaAtiva(data: any): Observable<any> {
-    return this.http.get(`${this.apiUrl}/fila-ativa?data=${data}`);
+    return this.http.get(`${this.apiUrl}/ativa?data=${data}`);
   }
 
   adicionar(cliente: any): Observable<any> {
     return this.http.post(this.apiUrl, cliente);
   }
 
-  atualizar(id: number): Observable<any> {
-    return this.http.put(`${this.apiUrl}/${id}`, '');
+  atualizarParaFinalizado(id: number): Observable<any> {
+    return this.http.put(`${this.apiUrl}/finalizado/${id}`, '');
+  }
+
+  atualizarParaEmAndamento(id: number): Observable<any> {
+    return this.http.put(`${this.apiUrl}/em-andamento/${id}`, '');
   }
 
   remover(id: number): Observable<any> {

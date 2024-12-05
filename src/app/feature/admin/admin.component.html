@@ -1,67 +1,130 @@
-<div class="grid place-content-center">
-    <div class="p-5">
-      <mat-form-field class="mt-4">
-        <input
-          matInput
-          [formControl]="filterControl"
-          (keyup)="applyFilter($event)"
-          placeholder="filtrar"
-        />
-      </mat-form-field>
-  
-      <!-- Tabela Responsiva -->
-      <div class="overflow-x-auto">
-        <table mat-table [dataSource]="dataSource" class="min-w-full table-auto mat-elevation-z8">
-          
-          <!-- Definições das colunas -->
+<div class="grid place-content-center overflow-hidden">
+  <app-voltar-para-listagem class="p-4"></app-voltar-para-listagem>
+  <div class="p-5">
+    <mat-form-field class="mt-4 w-full">
+      <input
+        matInput
+        [formControl]="filterControl"
+        (keyup)="applyFilter($event)"
+        placeholder="Filtrar"
+        class="p-2 border border-gray-300 rounded w-full"
+      />
+    </mat-form-field>
+
+    <div class="w-[400px] md:w-[700px] lg:w-[1100px] max-w-full p-4">
+      <div class="overflow-x-auto lg:overflow-hidden">
+        <table
+          mat-table
+          [dataSource]="dataSource"
+          class="table-auto mat-elevation-z8"
+        >
           <ng-container matColumnDef="id">
-            <th mat-header-cell *matHeaderCellDef class="p-2 text-left">Id</th>
-            <td mat-cell *matCellDef="let element" class="p-2">{{ element.id }}</td>
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              class="p-2 text-left min-w-[100px]"
+            >
+              Id
+            </th>
+            <td mat-cell *matCellDef="let element" class="p-2">
+              {{ element.id }}
+            </td>
           </ng-container>
-  
           <ng-container matColumnDef="nome">
-            <th mat-header-cell *matHeaderCellDef class="p-2 text-left">Nome</th>
-            <td mat-cell *matCellDef="let element" class="p-2">{{ element.nome }}</td>
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              class="p-2 text-left min-w-[200px]"
+            >
+              Nome
+            </th>
+            <td mat-cell *matCellDef="let element" class="p-2">
+              {{ element.nome }}
+            </td>
           </ng-container>
-  
           <ng-container matColumnDef="registradoEm">
-            <th mat-header-cell *matHeaderCellDef class="p-2 text-left">Chegada</th>
-            <td mat-cell *matCellDef="let element" class="p-2">{{ element.registradoEm | date: 'dd/MM/yyyy HH:mm:ss' }}</td>
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              class="p-2 text-left min-w-[180px]"
+            >
+              Chegada
+            </th>
+            <td mat-cell *matCellDef="let element" class="p-2">
+              {{ element.registradoEm | date : "dd/MM/yyyy HH:mm:ss" }}
+            </td>
           </ng-container>
-  
           <ng-container matColumnDef="servico">
-            <th mat-header-cell *matHeaderCellDef class="p-2 text-left">Serviço</th>
-            <td mat-cell *matCellDef="let element" class="p-2">{{ element.servico }}</td>
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              class="p-2 text-left min-w-[150px]"
+            >
+              Serviço
+            </th>
+            <td mat-cell *matCellDef="let element" class="p-2">
+              {{ element.servico }}
+            </td>
           </ng-container>
-  
           <ng-container matColumnDef="barbeiroPreferido">
-            <th mat-header-cell *matHeaderCellDef class="p-2 text-left">Possui Preferência?</th>
-            <td mat-cell *matCellDef="let element" class="p-2">{{ element.barbeiroPreferido ?? 'Não' }}</td>
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              class="p-2 text-left min-w-[150px]"
+            >
+              Possui Preferência?
+            </th>
+            <td mat-cell *matCellDef="let element" class="p-2">
+              {{ element.barbeiroPreferido ?? "Não" }}
+            </td>
           </ng-container>
-  
           <ng-container matColumnDef="status">
             <th mat-header-cell *matHeaderCellDef class="p-2 text-left">Status</th>
-            <td mat-cell *matCellDef="let element" class="p-2">{{ element.status }}</td>
-          </ng-container>
-  
-          <ng-container matColumnDef="acao">
-            <th mat-header-cell *matHeaderCellDef class="p-2 text-left">Ação</th>
             <td mat-cell *matCellDef="let element" class="p-2">
-              <mat-icon (click)="onConcluir(element)" class="mr-3" matTooltip="Alterar status para finalizado">
+              <span *ngIf="element.status === 'Em andamento'; else defaultStatus" class="badge-green">
+                {{ element.status }}
+              </span>
+              <ng-template #defaultStatus>
+                {{ element.status }}
+              </ng-template>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="acao">
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              class="p-2 text-left min-w-[150px]"
+            >
+              Ação
+            </th>
+            <td mat-cell *matCellDef="let element" class="p-2">
+              <mat-icon
+              (click)="onEmProgresso(element)"
+              class="mr-3"
+              matTooltip="Alterar status para em andamento"
+            >
+              update
+            </mat-icon>
+              <mat-icon
+                (click)="onConcluir(element)"
+                class="mr-3"
+                matTooltip="Alterar status para finalizado"
+              >
                 done
               </mat-icon>
-  
-              <mat-icon (click)="onExcluir(element)" color="warn" matTooltip="deletar cliente da fila">
+              <mat-icon
+                (click)="onExcluir(element)"
+                color="warn"
+                matTooltip="Deletar cliente da fila"
+              >
                 delete
               </mat-icon>
             </td>
           </ng-container>
-  
-          <!-- Linhas da Tabela -->
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
           <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
         </table>
       </div>
     </div>
   </div>
-  
+</div>
