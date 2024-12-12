@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "/subscriptions/2dfcce3a-680a-478a-9d9e-6fdd35875dce/resourceGroups/kazue-build/providers/Microsoft.Web/sites/app-barbearia-kazue",
+    "appService.deploySubpath": "."
+}

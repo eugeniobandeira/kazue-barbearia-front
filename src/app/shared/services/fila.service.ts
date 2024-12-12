@@ -7,7 +7,8 @@ import { Observable } from 'rxjs';
 })
 
 export class FilaService {
-  private readonly apiUrl = 'http://localhost:5107/api/fila';
+  // private readonly apiUrl = 'http://localhost:5107/api/fila';
+  private readonly apiUrl = 'https://app-barbearia-kazue-bce3erfgfbcmb4ey.canadacentral-01.azurewebsites.net/api/fila';
 
   constructor(
     private readonly http: HttpClient
